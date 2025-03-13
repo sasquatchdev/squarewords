@@ -1,0 +1,1 @@
+wget https://raw.githubusercontent.com/zeisler/scrabble/refs/heads/master/db/dictionary.csv
