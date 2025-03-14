@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{model::trie::Trie, LIMIT, SIZE, UNIQUE};
+use crate::{model::trie::Trie, SIZE, UNIQUE};
 
 pub struct Solver {
     trie: Trie,

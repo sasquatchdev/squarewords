@@ -14,7 +14,6 @@ mod find;
 pub const SIZE: usize = 3;
 pub const TOP_N: u64 = 100;
 pub const UNIQUE: bool = true;
-pub const LIMIT: usize = 0;
 
 fn main() {
     let freq = load_freq();    
