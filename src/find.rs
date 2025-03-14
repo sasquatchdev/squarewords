@@ -1,15 +1,16 @@
 use std::collections::HashSet;
 
-use crate::{model::trie::Trie, SIZE};
+use crate::{model::trie::Trie, LIMIT, SIZE, UNIQUE};
 
 pub struct Solver {
     trie: Trie,
     chars: [char; SIZE * SIZE],
+    sols: Vec<[char; SIZE * SIZE]>,
 }
 
 impl Solver {
     pub fn new(trie: Trie) -> Self {
-        Self { trie, chars: [' '; SIZE * SIZE] }
+        Self { trie, chars: [' '; SIZE * SIZE], sols: Vec::new() }
     }
 
     pub fn solve(&mut self) {
@@ -17,10 +18,15 @@ impl Solver {
     }
 
     pub fn solve_rec(&mut self, index: usize) {
+        if (self.sols.len() >= LIMIT) || LIMIT == 0 {
+            return;
+        }
+
         if index == SIZE * SIZE {
             if self.valid() {
-                self.println();
-                println!("---");
+                if !UNIQUE || self.unique() {
+                    self.sols.push(self.chars);
+                }
             }
             return;
         }
@@ -35,14 +41,19 @@ impl Solver {
         self.chars[index] = ' ';
     }
 
-    fn println(&self)  {
-        for h in 0..SIZE {
-            for w in 0..SIZE {
-                print!("{} ", self.chars[h * SIZE + w]);
+    pub fn solutions(&self) -> Vec<[char; SIZE * SIZE]> {
+        self.sols.clone()
+    }
+
+    fn unique(&self) -> bool {
+        let mut set = HashSet::new();
+        for word in self.words() {
+            if !set.insert(word) {
+                return false;
             }
-            println!();
         }
-        println!();
+
+        true
     }
 
     fn valid(&self) -> bool {
