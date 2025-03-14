@@ -33,8 +33,10 @@ fn main() {
         thread::spawn(move || {
             let mut solver = find::Solver::new(trie.lock().unwrap().clone());
             solver.solve(&mut |solution| {
-                tx.send(solution.to_vec()).expect("Failed to send solution.");
+                tx.send(Some(solution.to_vec())).expect("Failed to send solution.");
             });
+
+            tx.send(None).expect("Failed to send None.");
         })
     };
 
@@ -64,9 +66,12 @@ fn load_dict(freq: &Dictionary) -> Dictionary {
         .collect::<Dictionary>()
 }
 
-fn print_all(rx: mpsc::Receiver<Vec<char>>) {
+fn print_all(rx: mpsc::Receiver<Option<Vec<char>>>) {
     for solution in rx {
-        print(solution);
+        match solution {
+            Some(solution) => print(solution),
+            None => break,
+        }
     }
 }
 
