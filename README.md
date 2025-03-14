@@ -2,6 +2,11 @@
 
 A word-square finder/solver written in rust.
 
+> [!Important]
+> This repository is not actively being maintained, and might contain
+> bugs, or other unknown issues.
+
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
@@ -34,12 +39,10 @@ cargo run --quiet
 
 ## Configuration
 
-Currently, to configure this, you'll have to edit the Constants at the begining of the `main.rs` file. You have three options:
+Currently, to configure this, you'll have to edit the Constants at the begining of the `src/main.rs` file. You have three options:
 
 1. `const SIZE: usize` - the size of the word square (both width and heiht)
 
 2. `const TOP_N: u64` - the lower it gets, the more popular used words have to be (0 means no restriction)
 
 3. `const UNIQUE: bool` - if words can appear multiple times in the same square
-
-_In the future, I will add a `Words.toml` configuration file which will replace this._
