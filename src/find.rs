@@ -5,27 +5,22 @@ use crate::{model::trie::Trie, LIMIT, SIZE, UNIQUE};
 pub struct Solver {
     trie: Trie,
     chars: [char; SIZE * SIZE],
-    sols: Vec<[char; SIZE * SIZE]>,
 }
 
 impl Solver {
     pub fn new(trie: Trie) -> Self {
-        Self { trie, chars: [' '; SIZE * SIZE], sols: Vec::new() }
+        Self { trie, chars: [' '; SIZE * SIZE] }
     }
 
-    pub fn solve(&mut self) {
-        self.solve_rec(0);
+    pub fn solve(&mut self, callback: &mut impl FnMut(&[char; SIZE * SIZE])) {
+        self.solve_rec(0, callback);
     }
 
-    pub fn solve_rec(&mut self, index: usize) {
-        if (self.sols.len() >= LIMIT) || LIMIT == 0 {
-            return;
-        }
-
+    pub fn solve_rec(&mut self, index: usize, callback: &mut impl FnMut(&[char; SIZE * SIZE])) {
         if index == SIZE * SIZE {
             if self.valid() {
                 if !UNIQUE || self.unique() {
-                    self.sols.push(self.chars);
+                    callback(&self.chars);
                 }
             }
             return;
@@ -34,15 +29,11 @@ impl Solver {
         for c in 'a' ..= 'z' {
             self.chars[index] = c;
             if self.valid() {
-                self.solve_rec(index + 1);
+                self.solve_rec(index + 1, callback);
             }
         }
 
         self.chars[index] = ' ';
-    }
-
-    pub fn solutions(&self) -> Vec<[char; SIZE * SIZE]> {
-        self.sols.clone()
     }
 
     fn unique(&self) -> bool {
