@@ -6,7 +6,10 @@ pub enum Error {
     IOError(#[from] std::io::Error),
 
     #[error("CSV Error: {0}")]
-    CSVError(#[from] csv::Error)
+    CSVError(#[from] csv::Error),
+
+    #[error("ParseIntError: {0}")]
+    ParseIntError(#[from] std::num::ParseIntError),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
